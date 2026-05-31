@@ -9,6 +9,7 @@ from typing import Any
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DEFAULT_WORDS_PATH = BASE_DIR / "data" / "forbidden_words.ko.json"
+RETURN_MATCH_VALUE = os.getenv("RETURN_MATCH_VALUE", "false").lower() == "true"
 
 ZERO_WIDTH_PATTERN = re.compile(r"[\u200b\u200c\u200d\ufeff]")
 SPACE_PATTERN = re.compile(r"\s+")
@@ -42,6 +43,14 @@ def normalize_text(text: str, *, remove_spaces: bool = False) -> str:
         text = SPACE_PATTERN.sub(" ", text).strip()
 
     return text
+
+
+def mask_value(value: str) -> str:
+    if not value:
+        return ""
+    if len(value) <= 2:
+        return value[0] + "*"
+    return value[0] + ("*" * (len(value) - 2)) + value[-1]
 
 
 def _validate_rule(raw: dict[str, Any]) -> ForbiddenRule:
@@ -94,11 +103,12 @@ def check_text(text: str) -> dict[str, Any]:
                 found = False
 
         if found:
+            display_value = rule.value if RETURN_MATCH_VALUE else mask_value(rule.value)
             matches.append(
                 {
                     "id": rule.id,
                     "type": rule.type,
-                    "value": rule.value,
+                    "value": display_value,
                     "category": rule.category,
                     "severity": rule.severity,
                     "description": rule.description,

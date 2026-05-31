@@ -1,0 +1,61 @@
+{
+  "version": "1.0.0",
+  "language": "ko",
+  "description": "기본 금지어/주의어 샘플입니다. 서비스 정책에 맞게 추가/수정하세요.",
+  "rules": [
+    {
+      "id": "ko_mild_001",
+      "type": "word",
+      "value": "바보",
+      "category": "mild_insult",
+      "severity": 1,
+      "enabled": true,
+      "description": "가벼운 비하 표현"
+    },
+    {
+      "id": "ko_mild_002",
+      "type": "word",
+      "value": "멍청이",
+      "category": "mild_insult",
+      "severity": 1,
+      "enabled": true,
+      "description": "가벼운 비하 표현"
+    },
+    {
+      "id": "ko_aggressive_001",
+      "type": "word",
+      "value": "꺼져",
+      "category": "aggressive",
+      "severity": 2,
+      "enabled": true,
+      "description": "공격적 표현"
+    },
+    {
+      "id": "ko_spam_001",
+      "type": "regex",
+      "value": "홍보\\s*문구",
+      "category": "spam",
+      "severity": 2,
+      "enabled": true,
+      "description": "홍보성 문구 패턴"
+    },
+    {
+      "id": "ko_spam_002",
+      "type": "regex",
+      "value": "무료\\s*충전",
+      "category": "spam",
+      "severity": 2,
+      "enabled": true,
+      "description": "스팸성 홍보 패턴"
+    },
+    {
+      "id": "ko_external_chat_001",
+      "type": "regex",
+      "value": "외부\\s*채팅",
+      "category": "external_chat",
+      "severity": 2,
+      "enabled": true,
+      "description": "외부 채팅 유도 패턴"
+    }
+  ]
+}

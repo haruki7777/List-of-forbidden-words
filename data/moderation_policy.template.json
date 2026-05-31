@@ -1,0 +1,78 @@
+{
+  "version": "1.0.0",
+  "description": "공개 저장소에 민감 표현 원문을 저장하지 않고, 카테고리와 운영 정책을 관리하기 위한 템플릿입니다.",
+  "categories": [
+    {
+      "id": "mild_insult",
+      "label": "가벼운 비하/모욕",
+      "default_severity": 1,
+      "default_action": "warn",
+      "log": true
+    },
+    {
+      "id": "aggressive",
+      "label": "공격적 표현",
+      "default_severity": 2,
+      "default_action": "delete_and_warn",
+      "log": true
+    },
+    {
+      "id": "hate_or_discrimination",
+      "label": "혐오/차별 표현",
+      "default_severity": 4,
+      "default_action": "delete_warn_and_report",
+      "log": true
+    },
+    {
+      "id": "sexual_content",
+      "label": "성적 표현",
+      "default_severity": 4,
+      "default_action": "delete_warn_and_report",
+      "log": true
+    },
+    {
+      "id": "violent_threat",
+      "label": "폭력적 위협",
+      "default_severity": 5,
+      "default_action": "delete_warn_report_and_timeout",
+      "log": true
+    },
+    {
+      "id": "self_harm_risk",
+      "label": "자해/위기 표현",
+      "default_severity": 5,
+      "default_action": "alert_moderators",
+      "log": true
+    },
+    {
+      "id": "spam",
+      "label": "스팸/홍보",
+      "default_severity": 2,
+      "default_action": "delete_and_warn",
+      "log": true
+    },
+    {
+      "id": "external_chat",
+      "label": "외부 채팅 유도",
+      "default_severity": 2,
+      "default_action": "delete_and_warn",
+      "log": true
+    },
+    {
+      "id": "privacy_leak",
+      "label": "개인정보 노출",
+      "default_severity": 5,
+      "default_action": "delete_and_report",
+      "log": true
+    }
+  ],
+  "actions": {
+    "allow": "허용",
+    "warn": "경고만 전송",
+    "delete_and_warn": "메시지 삭제 후 경고",
+    "delete_warn_and_report": "메시지 삭제, 경고, 관리자 로그",
+    "delete_warn_report_and_timeout": "메시지 삭제, 경고, 관리자 로그, 타임아웃",
+    "alert_moderators": "메시지는 상황에 따라 처리하고 관리자에게 알림",
+    "delete_and_report": "메시지 삭제 후 관리자 로그"
+  }
+}

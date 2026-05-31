@@ -4,6 +4,15 @@
 
 > 주의: 세상 모든 금지어를 완전히 포함하는 목록은 존재하기 어렵습니다. 은어, 오타, 초성, 띄어쓰기 우회, 신조어가 계속 생기므로 이 저장소는 **계속 추가/관리하는 방식**으로 쓰는 것을 권장합니다.
 
+## 중요한 운영 원칙
+
+공개 GitHub 저장소에는 민감 표현 원본 전체 목록을 그대로 올리지 않는 것을 권장합니다.
+
+- 외부 위키/웹페이지 내용을 그대로 복사해 저장하면 라이선스와 저작권 문제가 생길 수 있습니다.
+- 민감 표현 원문을 공개 목록으로 배포하면 재유포 위험이 있습니다.
+- 공개 저장소에는 API 코드, 데이터 형식, 샘플 규칙, 변환 도구만 둡니다.
+- 실제 운영용 목록은 서버의 비공개 파일, 비공개 저장소, DB, 환경별 볼륨에서 관리합니다.
+
 ## 기능
 
 - FastAPI 기반 금지어 감지 API
@@ -11,6 +20,7 @@
 - 단어, 정규식 패턴, 카테고리, 심각도 지원
 - 한글/영문 대소문자, 유니코드 정규화, 공백 제거 비교 지원
 - 선택적 API Key 보호 지원
+- 기본값으로 감지된 원문을 마스킹해서 응답
 
 ## 폴더 구조
 
@@ -24,8 +34,10 @@
 ├─ clients/
 │  ├─ javascript.js
 │  └─ python_client.py
-├─ examples/
-│  └─ curl.md
+├─ integrations/
+│  └─ discord_py_example.py
+├─ tools/
+│  └─ build_rules_from_csv.py
 ├─ requirements.txt
 ├─ Dockerfile
 ├─ .env.example
@@ -109,6 +121,28 @@ API Key를 설정하지 않으면 공개 API처럼 동작합니다.
 }
 ```
 
+## CSV에서 목록 만들기
+
+직접 정리한 CSV를 JSON 규칙 파일로 변환할 수 있습니다.
+
+CSV 헤더:
+
+```csv
+id,type,value,category,severity,enabled,description
+```
+
+변환:
+
+```bash
+python tools/build_rules_from_csv.py --input ./my_rules.csv --output ./data/forbidden_words.ko.json
+```
+
+운영 서버에서 비공개 파일을 쓰고 싶으면 환경변수로 지정합니다.
+
+```env
+FORBIDDEN_WORDS_PATH=/secure/path/forbidden_words.private.json
+```
+
 ## JavaScript에서 사용
 
 ```js
@@ -132,22 +166,7 @@ print(res.json())
 
 ## Discord 봇에 붙이는 방식
 
-메시지를 받았을 때 `/v1/check`로 보내고, `blocked`가 `true`면 삭제/경고 처리하면 됩니다.
-
-```py
-@bot.event
-async def on_message(message):
-    if message.author.bot:
-        return
-
-    result = requests.post(API_URL, json={"text": message.content}).json()
-    if result["blocked"]:
-        await message.delete()
-        await message.channel.send(f"{message.author.mention} 금지어가 감지됐어.", delete_after=5)
-        return
-
-    await bot.process_commands(message)
-```
+`integrations/discord_py_example.py`를 참고하세요. 메시지를 받았을 때 `/v1/check`로 보내고, `blocked`가 `true`면 삭제/경고 처리하면 됩니다.
 
 ## 운영 팁
 
@@ -155,3 +174,4 @@ async def on_message(message):
 - 초성/띄어쓰기/특수문자/반복문자 우회가 있으면 regex 항목을 추가하세요.
 - 차단 로그를 따로 남겨서 자주 나오는 우회 표현을 목록에 계속 추가하세요.
 - 공개 API로 둘 경우 악용될 수 있으니 실서비스에서는 API Key를 권장합니다.
+- API 응답에서 원문을 보고 싶으면 `RETURN_MATCH_VALUE=true`를 설정할 수 있지만, 운영 환경에서는 기본값인 마스킹을 권장합니다.

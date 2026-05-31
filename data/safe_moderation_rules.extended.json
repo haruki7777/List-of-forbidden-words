@@ -1,0 +1,169 @@
+{
+  "version": "1.1.0",
+  "language": "ko",
+  "description": "공개 저장소에 안전하게 둘 수 있는 확장 검열 규칙입니다. 욕설/혐오/성적 비하 원문 대량 목록은 포함하지 않습니다.",
+  "rules": [
+    {
+      "id": "spam_url_001",
+      "type": "regex",
+      "value": "https?:\\/\\/[^\\s]+",
+      "category": "external_link",
+      "severity": 2,
+      "enabled": true,
+      "description": "외부 URL 감지"
+    },
+    {
+      "id": "spam_discord_invite_001",
+      "type": "regex",
+      "value": "discord\\.(gg|com\\/invite)\\/[A-Za-z0-9-]+",
+      "category": "external_invite",
+      "severity": 3,
+      "enabled": true,
+      "description": "디스코드 초대 링크 감지"
+    },
+    {
+      "id": "spam_repeat_001",
+      "type": "regex",
+      "value": "(.{2,20})\\1{4,}",
+      "category": "spam",
+      "severity": 2,
+      "enabled": true,
+      "description": "짧은 문구 반복 도배 감지"
+    },
+    {
+      "id": "spam_mention_001",
+      "type": "regex",
+      "value": "(<@!?\\d+>\\s*){5,}",
+      "category": "mention_spam",
+      "severity": 3,
+      "enabled": true,
+      "description": "과도한 유저 멘션 감지"
+    },
+    {
+      "id": "spam_role_mention_001",
+      "type": "regex",
+      "value": "(<@&\\d+>\\s*){3,}",
+      "category": "mention_spam",
+      "severity": 3,
+      "enabled": true,
+      "description": "과도한 역할 멘션 감지"
+    },
+    {
+      "id": "privacy_email_001",
+      "type": "regex",
+      "value": "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}",
+      "category": "privacy_leak",
+      "severity": 4,
+      "enabled": true,
+      "description": "이메일 주소 형태 감지"
+    },
+    {
+      "id": "privacy_phone_kr_001",
+      "type": "regex",
+      "value": "01[016789][-\\s]?\\d{3,4}[-\\s]?\\d{4}",
+      "category": "privacy_leak",
+      "severity": 4,
+      "enabled": true,
+      "description": "한국 휴대폰 번호 형태 감지"
+    },
+    {
+      "id": "privacy_rrn_like_001",
+      "type": "regex",
+      "value": "\\d{6}[-\\s]?[1-4]\\d{6}",
+      "category": "privacy_leak",
+      "severity": 5,
+      "enabled": true,
+      "description": "주민등록번호와 유사한 숫자 패턴 감지"
+    },
+    {
+      "id": "privacy_card_like_001",
+      "type": "regex",
+      "value": "(?:\\d[ -]*?){13,19}",
+      "category": "privacy_leak",
+      "severity": 5,
+      "enabled": true,
+      "description": "카드번호와 유사한 긴 숫자 패턴 감지"
+    },
+    {
+      "id": "scam_money_001",
+      "type": "regex",
+      "value": "(무료|공짜|이벤트).{0,12}(충전|지급|당첨|쿠폰)",
+      "category": "scam_or_spam",
+      "severity": 3,
+      "enabled": true,
+      "description": "무료 보상/충전 유도성 문구 감지"
+    },
+    {
+      "id": "scam_account_001",
+      "type": "regex",
+      "value": "(계정|아이디|비밀번호|인증번호).{0,10}(주세요|보내|입력|확인)",
+      "category": "scam_or_privacy",
+      "severity": 5,
+      "enabled": true,
+      "description": "계정 정보 요구 패턴 감지"
+    },
+    {
+      "id": "external_chat_001",
+      "type": "regex",
+      "value": "(외부|개인|따로).{0,8}(채팅|연락|DM|디엠|카톡)",
+      "category": "external_chat",
+      "severity": 2,
+      "enabled": true,
+      "description": "외부 연락 유도 패턴 감지"
+    },
+    {
+      "id": "threat_pattern_001",
+      "type": "regex",
+      "value": "(죽여|때려|패버|찾아간다|가만안둬)",
+      "category": "violent_threat",
+      "severity": 5,
+      "enabled": true,
+      "description": "폭력 위협성 표현 일부 감지"
+    },
+    {
+      "id": "harassment_pattern_001",
+      "type": "regex",
+      "value": "(꺼져|사라져|나가라)",
+      "category": "aggressive",
+      "severity": 2,
+      "enabled": true,
+      "description": "공격적 퇴장 요구 표현 감지"
+    },
+    {
+      "id": "adult_request_001",
+      "type": "regex",
+      "value": "(19금|성인).{0,10}(사진|영상|방|채널|자료)",
+      "category": "sexual_content",
+      "severity": 4,
+      "enabled": true,
+      "description": "성인 콘텐츠 요청/홍보 패턴 감지"
+    },
+    {
+      "id": "illegal_trade_001",
+      "type": "regex",
+      "value": "(계정|아이템|쿠폰|문상).{0,8}(매입|판매|삽니다|팝니다)",
+      "category": "trade_spam",
+      "severity": 3,
+      "enabled": true,
+      "description": "거래/매매성 홍보 패턴 감지"
+    },
+    {
+      "id": "caps_spam_001",
+      "type": "regex",
+      "value": "[A-Zㄱ-ㅎㅏ-ㅣ가-힣!?.]{20,}",
+      "category": "spam",
+      "severity": 1,
+      "enabled": true,
+      "description": "긴 고밀도 문자 도배 후보 감지"
+    },
+    {
+      "id": "emoji_spam_001",
+      "type": "regex",
+      "value": "([😀-🙏🌀-🗿🚀-🛿☀-⛿✀-➿]\\s*){8,}",
+      "category": "spam",
+      "severity": 1,
+      "enabled": true,
+      "description": "이모지 도배 후보 감지"
+    }
+  ]
+}

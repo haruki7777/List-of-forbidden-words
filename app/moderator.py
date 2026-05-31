@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
+from urllib.request import Request, urlopen
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DEFAULT_WORDS_PATH = BASE_DIR / "data" / "forbidden_words.ko.json"
@@ -69,15 +70,40 @@ def _validate_rule(raw: dict[str, Any]) -> ForbiddenRule:
     )
 
 
-@lru_cache(maxsize=1)
-def load_rules() -> list[ForbiddenRule]:
+def _load_payload_from_url(url: str) -> dict[str, Any]:
+    headers = {"Accept": "application/json"}
+
+    token = os.getenv("FORBIDDEN_WORDS_TOKEN", "").strip()
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+
+    custom_header_name = os.getenv("FORBIDDEN_WORDS_AUTH_HEADER_NAME", "").strip()
+    custom_header_value = os.getenv("FORBIDDEN_WORDS_AUTH_HEADER_VALUE", "").strip()
+    if custom_header_name and custom_header_value:
+        headers[custom_header_name] = custom_header_value
+
+    request = Request(url, headers=headers)
+    with urlopen(request, timeout=10) as response:
+        raw = response.read().decode("utf-8")
+    return json.loads(raw)
+
+
+def _load_payload() -> dict[str, Any]:
+    url = os.getenv("FORBIDDEN_WORDS_URL", "").strip()
+    if url:
+        return _load_payload_from_url(url)
+
     path = Path(os.getenv("FORBIDDEN_WORDS_PATH", str(DEFAULT_WORDS_PATH)))
     if not path.exists():
         raise FileNotFoundError(f"Forbidden words file not found: {path}")
 
     with path.open("r", encoding="utf-8") as f:
-        payload = json.load(f)
+        return json.load(f)
 
+
+@lru_cache(maxsize=1)
+def load_rules() -> list[ForbiddenRule]:
+    payload = _load_payload()
     raw_rules = payload.get("rules", [])
     return [_validate_rule(rule) for rule in raw_rules if rule.get("enabled", True)]
 

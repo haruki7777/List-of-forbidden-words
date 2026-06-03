@@ -56,6 +56,60 @@
       "severity": 2,
       "enabled": true,
       "description": "외부 채팅 유도 패턴"
+    },
+    {
+      "id": "ko_profanity_spacing_001",
+      "type": "regex",
+      "value": "(시\\s*발|씨\\s*발|병\\s*신|개\\s*새\\s*끼|존\\s*나|꺼\\s*져|닥\\s*쳐)",
+      "category": "profanity",
+      "severity": 3,
+      "enabled": true,
+      "description": "띄어쓰기 우회 욕설"
+    },
+    {
+      "id": "ko_profanity_initial_001",
+      "type": "regex",
+      "value": "(ㅅ\\s*ㅂ|ㅆ\\s*ㅂ|ㅂ\\s*ㅅ|ㄱ\\s*ㅅ\\s*ㄲ|ㅈ\\s*ㄴ|ㄲ\\s*ㅈ|ㄷ\\s*ㅊ)",
+      "category": "profanity_initial",
+      "severity": 3,
+      "enabled": true,
+      "description": "초성 욕설"
+    },
+    {
+      "id": "ko_profanity_word_001",
+      "type": "word",
+      "value": "시발",
+      "category": "profanity",
+      "severity": 3,
+      "enabled": true,
+      "description": "욕설"
+    },
+    {
+      "id": "ko_profanity_word_002",
+      "type": "word",
+      "value": "씨발",
+      "category": "profanity",
+      "severity": 3,
+      "enabled": true,
+      "description": "욕설"
+    },
+    {
+      "id": "ko_profanity_word_003",
+      "type": "word",
+      "value": "병신",
+      "category": "profanity",
+      "severity": 3,
+      "enabled": true,
+      "description": "욕설"
+    },
+    {
+      "id": "ko_profanity_word_004",
+      "type": "word",
+      "value": "개새끼",
+      "category": "profanity",
+      "severity": 3,
+      "enabled": true,
+      "description": "욕설"
     }
   ]
 }
